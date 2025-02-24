@@ -121,11 +121,15 @@ async function sendServerFailedMessage(service: RenderService, failureReason: an
         .setTitle(`${service.name} Failed`)
         .setDescription(description)
         .setURL(service.dashboardUrl)
-        .setFooter({
-            text: `[ViewLogs](${service.dashboardUrl}/logs)`
-        })
 
-    channel.send({embeds: [embed]})
+    const logs = new ButtonBuilder()
+        .setLabel("View Logs")
+        .setURL(`${service.dashboardUrl}/logs`)
+        .setStyle(ButtonStyle.Link);
+    const row = new ActionRowBuilder<MessageActionRowComponentBuilder>()
+        .addComponents(logs);
+
+    channel.send({embeds: [embed], components: [row]})
 }
 
 // fetchEventInfo fetches the event that triggered the webhook
