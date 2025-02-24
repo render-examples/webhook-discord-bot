@@ -10,6 +10,8 @@ services:
     sync: false
   - key: RENDER_API_KEY
     sync: false
+  - key: DISCORD_TOKEN
+    sync: false
   region: oregon
   buildCommand: pnpm install && pnpm run build
   startCommand: pnpm run start
