@@ -4,7 +4,7 @@ import {RenderEvent, RenderService, WebhookPayload} from "./render";
 
 
 // Require the necessary discord.js classes
-import {Client, EmbedBuilder, Events, GatewayIntentBits} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, Client, EmbedBuilder, Events, GatewayIntentBits} from "discord.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -121,7 +121,11 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
         .setDescription(description)
         .setURL(service.dashboardUrl)
 
-    channel.send({embeds: [embed]})
+    const logs = new ButtonBuilder().setLabel("View Logs").setURL(`${service.dashboardUrl}/logs`)
+    const row = new ActionRowBuilder()
+        .addComponents(logs);
+
+    channel.send({embeds: [embed], components: [row]})
 }
 
 // fetchEventInfo fetches the event that triggered the webhook
