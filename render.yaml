@@ -1,0 +1,15 @@
+services:
+- type: web
+  name: webhook-discord-bot
+  runtime: node
+  repo: https://github.com/render-examples/webhook-discord-bot
+  branch: main
+  plan: starter
+  envVars:
+  - key: RENDER_WEBHOOK_SECRET
+    sync: false
+  - key: RENDER_API_KEY
+    sync: false
+  region: oregon
+  buildCommand: pnpm install && pnpm run build
+  startCommand: pnpm run start
