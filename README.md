@@ -2,6 +2,10 @@
 
 This example triggers a GitHub Action workflow when a deploy ended webhook is received for a specific service.
 
+# Prerequisites
+If you haven't already, [sign up for a Render account](https://dashboard.render.com/register).
+Creating webhooks on Render requires a Professional plan or higher. You can [view and upgrade your plan](https://dashboard.render.com/billing/update-plan) in the Render Dashboard.
+
 ## Deploy to Render
 
 1. Use the button below to deploy to Render </br>
