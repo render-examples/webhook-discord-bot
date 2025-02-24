@@ -4,6 +4,7 @@ import {RenderEvent, RenderService, WebhookPayload} from "./render";
 import {
     ActionRowBuilder,
     ButtonBuilder,
+    ButtonStyle,
     Client,
     EmbedBuilder,
     Events,
@@ -116,11 +117,6 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
     }
 
     const embed = new EmbedBuilder()
-        .setAuthor({
-            name: 'Render Bot',
-            iconURL: 'https://render.com/docs/images/render-logo-black.pn',
-            url: 'https://github.com/render-examples/webhook-discord-bot'
-        })
         .setColor(`#FF5C88`)
         .setTitle(`${service.name} Failed`)
         .setDescription(description)
@@ -129,6 +125,7 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
     const logs = new ButtonBuilder()
         .setLabel("View Logs")
         .setURL(`${service.dashboardUrl}/logs`)
+        .setStyle(ButtonStyle.Link);
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>()
         .addComponents(logs);
 
