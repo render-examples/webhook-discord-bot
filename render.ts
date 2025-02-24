@@ -16,16 +16,6 @@ export interface RenderService {
     branch: string
 }
 
-interface Commit {
-    id: string
-    message: string
-}
-
-export interface RenderDeploy {
-    id: string
-    commit?: Commit
-}
-
 export interface RenderEvent {
     id: string
     type: string

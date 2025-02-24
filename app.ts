@@ -73,16 +73,9 @@ function validateWebhook(req: Request) {
 async function handleWebhook(payload: WebhookPayload) {
     try {
         switch (payload.type) {
-            case "server_available":
-                const event = await fetchEventInfo(payload)
-
-                const deploy = await fetchDeployInfo(payload.data.serviceId, event.details.deployId)
-                if (!deploy.commit) {
-                    console.log(`ignoring deploy success for image backed service: ${payload.data.serviceId}`)
-                    return
-                }
-
+            case "server_failed":
                 const service = await fetchServiceInfo(payload)
+                const event = await fetchEventInfo(payload)
 
                 console.log(`sending discord message for ${service.name}`)
                 await sendMessage(service.name, service.branch)
@@ -128,25 +121,6 @@ async function fetchEventInfo(payload: WebhookPayload): Promise<RenderEvent> {
         return res.json()
     } else {
         throw new Error(`unable to fetch event info; received code :${res.status.toString()}`)
-    }
-}
-
-async function fetchDeployInfo(serviceId: string, deployId: string): Promise<RenderDeploy> {
-    const res = await fetch(
-        `${renderAPIURL}/services/${serviceId}/deploys/${deployId}`,
-        {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Authorization: `Bearer ${renderAPIToken}`,
-            },
-        },
-    )
-    if (res.ok) {
-        return res.json()
-    } else {
-        throw new Error(`unable to fetch deploy info; received code :${res.status.toString()}`)
     }
 }
 
