@@ -84,7 +84,7 @@ async function handleWebhook(payload: WebhookPayload) {
                 const event = await fetchEventInfo(payload)
 
                 console.log(`sending discord message for ${service.name}`)
-                await sendServerFailedMessage(service, event.details)
+                await sendServerFailedMessage(service, event.details.reason)
                 return
             default:
                 console.log(`unhandled webhook type ${payload.type} for service ${payload.data.serviceId}`)
@@ -94,7 +94,7 @@ async function handleWebhook(payload: WebhookPayload) {
     }
 }
 
-async function sendServerFailedMessage(service: RenderService, eventDetails: any) {
+async function sendServerFailedMessage(service: RenderService, failureReason: any) {
     const channel = await client.channels.fetch(discordChannelID);
     if (!channel ){
         throw new Error(`unable to find specified Discord channel ${discordChannelID}`);
@@ -106,14 +106,14 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
     }
 
     let description = "Failed for unknown reason"
-    if (eventDetails.nonZeroExit) {
-        description = `Exited with status ${eventDetails.nonZeroExit}`
-    } else if (eventDetails.oomKilled) {
+    if (failureReason.nonZeroExit) {
+        description = `Exited with status ${failureReason.nonZeroExit}`
+    } else if (failureReason.oomKilled) {
         description = `Out of Memory`
-    } else if (eventDetails.timedOutSeconds) {
-        description = `Timed out ` + eventDetails.timedOutReason
-    } else if (eventDetails.unhealthy) {
-        description = eventDetails.unhealthy
+    } else if (failureReason.timedOutSeconds) {
+        description = `Timed out ` + failureReason.timedOutReason
+    } else if (failureReason.unhealthy) {
+        description = failureReason.unhealthy
     }
 
     const embed = new EmbedBuilder()
@@ -121,15 +121,11 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
         .setTitle(`${service.name} Failed`)
         .setDescription(description)
         .setURL(service.dashboardUrl)
+        .setFooter({
+            text: `[ViewLogs](${service.dashboardUrl}/logs)`
+        })
 
-    const logs = new ButtonBuilder()
-        .setLabel("View Logs")
-        .setURL(`${service.dashboardUrl}/logs`)
-        .setStyle(ButtonStyle.Link);
-    const row = new ActionRowBuilder<MessageActionRowComponentBuilder>()
-        .addComponents(logs);
-
-    channel.send({embeds: [embed], components: [row]})
+    channel.send({embeds: [embed]})
 }
 
 // fetchEventInfo fetches the event that triggered the webhook
