@@ -4,7 +4,7 @@ import {RenderEvent, RenderService, WebhookPayload} from "./render";
 
 
 // Require the necessary discord.js classes
-import {Client, Events, GatewayIntentBits} from "discord.js";
+import {Client, EmbedBuilder, Events, GatewayIntentBits} from "discord.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -78,7 +78,7 @@ async function handleWebhook(payload: WebhookPayload) {
                 const event = await fetchEventInfo(payload)
 
                 console.log(`sending discord message for ${service.name}`)
-                await sendMessage(service.name, service.branch)
+                await sendServerFailedMessage(service, event.details)
                 return
             default:
                 console.log(`unhandled webhook type ${payload.type} for service ${payload.data.serviceId}`)
@@ -88,7 +88,7 @@ async function handleWebhook(payload: WebhookPayload) {
     }
 }
 
-async function sendMessage(serviceName: string, branch: string) {
+async function sendServerFailedMessage(service: RenderService, eventDetails: any) {
     const channel = await client.channels.fetch(discordChannelID);
     if (!channel ){
         throw new Error(`unable to find specified Discord channel ${discordChannelID}`);
@@ -99,7 +99,29 @@ async function sendMessage(serviceName: string, branch: string) {
         throw new Error(`specified Discord channel ${discordChannelID} is not sendable`);
     }
 
-    channel.send('content');
+    let description = "Failed for unknown reason"
+    if (eventDetails.nonZeroExit) {
+        description = `Exited with status ${eventDetails.nonZeroExit}`
+    } else if (eventDetails.oomKilled) {
+        description = `Out of Memory`
+    } else if (eventDetails.timedOutSeconds) {
+        description = `Timed out ` + eventDetails.timedOutReason
+    } else if (eventDetails.unhealthy) {
+        description = eventDetails.unhealthy
+    }
+
+    const embed = new EmbedBuilder()
+        .setAuthor({
+            name: 'Render Bot',
+            iconURL: 'https://render.com/docs/images/render-logo-black.pn',
+            url: 'https://github.com/render-examples/webhook-discord-bot'
+        })
+        .setColor(`#FF5C88`)
+        .setTitle(`${service.name} Failed`)
+        .setDescription(description)
+        .setURL(service.dashboardUrl)
+
+    channel.send({embeds: [embed]})
 }
 
 // fetchEventInfo fetches the event that triggered the webhook

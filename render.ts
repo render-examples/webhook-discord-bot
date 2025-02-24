@@ -12,8 +12,7 @@ export interface WebhookPayload {
 export interface RenderService {
     id: string
     name: string
-    repo: string
-    branch: string
+    dashboardUrl: string
 }
 
 export interface RenderEvent {
