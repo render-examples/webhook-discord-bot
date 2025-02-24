@@ -1,6 +1,6 @@
 import express, {NextFunction, Request, Response} from "express";
 import {Webhook, WebhookUnbrandedRequiredHeaders, WebhookVerificationError} from "standardwebhooks"
-import {RenderDeploy, RenderEvent, RenderService, WebhookPayload} from "./render";
+import {RenderEvent, RenderService, WebhookPayload} from "./render";
 
 
 // Require the necessary discord.js classes
