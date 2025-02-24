@@ -1,10 +1,15 @@
 import express, {NextFunction, Request, Response} from "express";
 import {Webhook, WebhookUnbrandedRequiredHeaders, WebhookVerificationError} from "standardwebhooks"
 import {RenderEvent, RenderService, WebhookPayload} from "./render";
-
-
-// Require the necessary discord.js classes
-import {ActionRowBuilder, ButtonBuilder, Client, EmbedBuilder, Events, GatewayIntentBits} from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    Client,
+    EmbedBuilder,
+    Events,
+    GatewayIntentBits,
+    MessageActionRowComponentBuilder
+} from "discord.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -121,8 +126,10 @@ async function sendServerFailedMessage(service: RenderService, eventDetails: any
         .setDescription(description)
         .setURL(service.dashboardUrl)
 
-    const logs = new ButtonBuilder().setLabel("View Logs").setURL(`${service.dashboardUrl}/logs`)
-    const row = new ActionRowBuilder()
+    const logs = new ButtonBuilder()
+        .setLabel("View Logs")
+        .setURL(`${service.dashboardUrl}/logs`)
+    const row = new ActionRowBuilder<MessageActionRowComponentBuilder>()
         .addComponents(logs);
 
     channel.send({embeds: [embed], components: [row]})
