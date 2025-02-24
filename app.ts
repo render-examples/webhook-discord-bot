@@ -89,7 +89,7 @@ async function handleWebhook(payload: WebhookPayload) {
 }
 
 async function sendMessage(serviceName: string, branch: string) {
-    const channel = client.channels.cache.get(discordChannelID);
+    const channel = await client.channels.fetch(discordChannelID);
     if (!channel ){
         throw new Error(`unable to find specified Discord channel ${discordChannelID}`);
     }
