@@ -73,7 +73,7 @@ function validateWebhook(req: Request) {
 async function handleWebhook(payload: WebhookPayload) {
     try {
         switch (payload.type) {
-            case "server_failed":
+            case "server_available":
                 const event = await fetchEventInfo(payload)
 
                 const deploy = await fetchDeployInfo(payload.data.serviceId, event.details.deployId)

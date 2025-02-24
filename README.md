@@ -14,3 +14,16 @@ Creating webhooks on Render requires a Professional plan or higher. You can [vie
 2. Follow [instructions](https://render.com/docs/webhooks) to create a webhook with the URL from your service and `/webhook` path
 3. Follow [instructions](https://render.com/docs/api#1-create-an-api-key) to create a Render API Key
 
+## Developing
+
+Once you've created a project and installed dependencies with `pnpm install`, start a development server:
+
+```bash
+pnpm run dev
+```
+
+## Building
+
+```bash
+pnpm run build
+```
