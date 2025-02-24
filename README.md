@@ -9,7 +9,7 @@ Creating webhooks on Render requires a Professional plan or higher. You can [vie
 ## Deploy to Render
 
 1. Use the button below to deploy to Render </br>
-<a href="https://render.com/deploy?repo=https://github.com/render-examples/twingate-example/tree/main"><img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"></a>
+<a href="https://render.com/deploy?repo=https://github.com/render-examples/webhook-discord-bot/tree/main"><img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"></a>
 
 2. Follow [instructions](https://render.com/docs/webhooks) to create a webhook with the URL from your service and `/webhook` path
 3. Follow [instructions](https://render.com/docs/api#1-create-an-api-key) to create a Render API Key
