@@ -15,7 +15,6 @@
   },
   "keywords": [],
   "dependencies": {
-    "@octokit/core": "^6.1.4",
     "discord.js": "^14.18.0",
     "express": "^5.0.1",
     "standardwebhooks": "^1.0.0"

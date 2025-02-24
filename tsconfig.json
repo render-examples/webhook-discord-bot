@@ -5,6 +5,6 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "strict": true,
-    "target": "es2020"
+    "target": "es2024"
   }
 }

@@ -30,7 +30,9 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 // Log in to Discord with your client's token
-client.login(discordToken);
+client.login(discordToken).catch(err => {
+    console.error(`unable to connect to Discord: ${err}`);
+});
 
 app.post("/webhook", express.raw({type: 'application/json'}), (req: Request, res: Response, next: NextFunction) => {
     try {
