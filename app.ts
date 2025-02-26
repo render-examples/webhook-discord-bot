@@ -26,7 +26,7 @@ const renderAPIURL = process.env.RENDER_API_URL || "https://api.render.com/v1"
 // To create a Render API key, follow instructions here: https://render.com/docs/api#1-create-an-api-key
 const renderAPIKey = process.env.RENDER_API_KEY || '';
 if (!renderAPIKey ) {
-    console.error("Error: RENDER_WEBHOOK_SECRET is not set.");
+    console.error("Error: RENDER_API_KEY is not set.");
     process.exit(1);
 }
 
