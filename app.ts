@@ -15,14 +15,31 @@ import {
 const app = express();
 const port = process.env.PORT || 3001;
 const renderWebhookSecret = process.env.RENDER_WEBHOOK_SECRET || '';
+if (!renderWebhookSecret ) {
+    console.error("Error: RENDER_WEBHOOK_SECRET is not set.");
+    process.exit(1);
+}
+
 
 const renderAPIURL = process.env.RENDER_API_URL || "https://api.render.com/v1"
 
-// To create a Render API token, follow instructions here: https://render.com/docs/api#1-create-an-api-key
-const renderAPIToken = process.env.RENDER_API_TOKEN || '';
+// To create a Render API key, follow instructions here: https://render.com/docs/api#1-create-an-api-key
+const renderAPIKey = process.env.RENDER_API_KEY || '';
+if (!renderAPIKey ) {
+    console.error("Error: RENDER_API_KEY is not set.");
+    process.exit(1);
+}
 
 const discordToken = process.env.DISCORD_TOKEN || '';
+if (!discordToken ) {
+    console.error("Error: DISCORD_TOKEN is not set.");
+    process.exit(1);
+}
 const discordChannelID = process.env.DISCORD_CHANNEL_ID || '';
+if (!discordChannelID ) {
+    console.error("Error: DISCORD_CHANNEL_ID is not set.");
+    process.exit(1);
+}
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -143,7 +160,7 @@ async function fetchEventInfo(payload: WebhookPayload): Promise<RenderEvent> {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization: `Bearer ${renderAPIToken}`,
+                Authorization: `Bearer ${renderAPIKey}`,
             },
         },
     )
@@ -162,7 +179,7 @@ async function fetchServiceInfo(payload: WebhookPayload): Promise<RenderService>
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization: `Bearer ${renderAPIToken}`,
+                Authorization: `Bearer ${renderAPIKey}`,
             },
         },
     )
