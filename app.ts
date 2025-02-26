@@ -18,8 +18,8 @@ const renderWebhookSecret = process.env.RENDER_WEBHOOK_SECRET || '';
 
 const renderAPIURL = process.env.RENDER_API_URL || "https://api.render.com/v1"
 
-// To create a Render API token, follow instructions here: https://render.com/docs/api#1-create-an-api-key
-const renderAPIToken = process.env.RENDER_API_TOKEN || '';
+// To create a Render API key, follow instructions here: https://render.com/docs/api#1-create-an-api-key
+const renderAPIKey = process.env.RENDER_API_KEY || '';
 
 const discordToken = process.env.DISCORD_TOKEN || '';
 const discordChannelID = process.env.DISCORD_CHANNEL_ID || '';
@@ -143,7 +143,7 @@ async function fetchEventInfo(payload: WebhookPayload): Promise<RenderEvent> {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization: `Bearer ${renderAPIToken}`,
+                Authorization: `Bearer ${renderAPIKey}`,
             },
         },
     )
@@ -162,7 +162,7 @@ async function fetchServiceInfo(payload: WebhookPayload): Promise<RenderService>
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization: `Bearer ${renderAPIToken}`,
+                Authorization: `Bearer ${renderAPIKey}`,
             },
         },
     )
